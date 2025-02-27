@@ -7,7 +7,7 @@ var ballSpeedY = 5; //Speed of ball
 
 var paddle1Y = 250; //Paddle SIZE
 var paddle2Y = 250; //Paddle SIZE
-const paddle_height = 85; //Paddle height
+const paddle_height = 100; //Paddle height
 const paddle_width = 10; //Paddle width
 
 window.onload = function () {
@@ -44,21 +44,22 @@ function calculateMousePos(evt) {
 
 //Function to move the paddel according to the ball (i.e AI)
 function ComputerMovement() {
+  var paddle2YCenter = paddle2Y + paddle_height / 2;
   //if paddle position is small than ball posn it will (i.e ball is down than paddle) it will move the paddle down
-  if (paddle2Y < ballY) {
-    paddle2Y += 5;
+  if (paddle2YCenter < ballY - 35) {
+    paddle2Y += 7;
   }
   //if paddle position is larger than ball posn it will (i.e ball is upper than paddle) it will move the paddle upward
-  else {
-    paddle2Y -= 5;
+  else if (paddle2YCenter > ballY + 35) {
+    paddle2Y -= 7;
   }
 }
 
 function moveEverything() {
   ComputerMovement();
 
-  ballX = ballX + ballSpeedX;
-  ballY = ballY + ballSpeedY;
+  ballX += ballSpeedX;
+  ballY += ballSpeedY;
 
   if (ballX > canvas.width - 10) {
     //if ball hits paddle area it will bounce else reset the ball.
