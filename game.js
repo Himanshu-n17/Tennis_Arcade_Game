@@ -3,7 +3,7 @@ var canvasContext;
 var ballX = 50; //SIZE
 var ballY = 50; //SIZE
 var ballSpeedX = 10; //Speed of ball
-var ballSpeedY = 5; //Speed of ball
+var ballSpeedY = 4; //Speed of ball
 
 var paddle1Y = 250; //Paddle SIZE
 var paddle2Y = 250; //Paddle SIZE
@@ -51,11 +51,11 @@ function ComputerMovement() {
   var paddle2YCenter = paddle2Y + paddle_height / 2;
   //if paddle position is small than ball posn it will (i.e ball is down than paddle) it will move the paddle down
   if (paddle2YCenter < ballY - 35) {
-    paddle2Y += 7;
+    paddle2Y += 6;
   }
   //if paddle position is larger than ball posn it will (i.e ball is upper than paddle) it will move the paddle upward
   else if (paddle2YCenter > ballY + 35) {
-    paddle2Y -= 7;
+    paddle2Y -= 6;
   }
 }
 
@@ -70,8 +70,8 @@ function moveEverything() {
     if (ballY > paddle2Y && ballY < paddle2Y + paddle_height) {
       ballSpeedX = -ballSpeedX;
     } else {
-      ballReset();
       Player1Score++;
+      ballReset();
     }
   }
   if (ballY > canvas.height - 10) {
@@ -83,12 +83,12 @@ function moveEverything() {
     if (ballY > paddle1Y && ballY < paddle1Y + paddle_height) {
       ballSpeedX = -ballSpeedX;
     } else {
-      ballReset();
       Player2Score++;
+      ballReset();
     }
   }
   if (ballY < 10) {
-    ballSpeedY = -ballSpeedY;
+    // ballSpeedY = -ballSpeedY;
   }
 }
 
@@ -110,7 +110,7 @@ function drawEverything() {
 
   //The Ball
   // colorRect(ballX, 100, 10, 10, "white");
-  colorCircle(ballX, ballY, 5, "white");
+  colorCircle(ballX, ballY, 10, "white");
 
   //Scores
   canvasContext.fillText(Player1Score, 100, 100);
