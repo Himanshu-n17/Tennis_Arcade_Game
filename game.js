@@ -10,6 +10,10 @@ var paddle2Y = 250; //Paddle SIZE
 const paddle_height = 100; //Paddle height
 const paddle_width = 10; //Paddle width
 
+//Scoring
+var Player1Score = 0;
+var Player2Score = 0;
+
 window.onload = function () {
   canvas = document.getElementById("gameCanvas");
   canvasContext = canvas.getContext("2d");
@@ -67,6 +71,7 @@ function moveEverything() {
       ballSpeedX = -ballSpeedX;
     } else {
       ballReset();
+      Player1Score++;
     }
   }
   if (ballY > canvas.height - 10) {
@@ -79,6 +84,7 @@ function moveEverything() {
       ballSpeedX = -ballSpeedX;
     } else {
       ballReset();
+      Player2Score++;
     }
   }
   if (ballY < 10) {
@@ -105,6 +111,10 @@ function drawEverything() {
   //The Ball
   // colorRect(ballX, 100, 10, 10, "white");
   colorCircle(ballX, ballY, 5, "white");
+
+  //Scores
+  canvasContext.fillText(Player1Score, 100, 100);
+  canvasContext.fillText(Player2Score, canvas.width - 100, 100);
 }
 
 function colorCircle(CenterX, CenterY, radius, drawColor) {
