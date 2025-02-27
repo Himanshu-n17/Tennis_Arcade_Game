@@ -88,7 +88,7 @@ function moveEverything() {
     }
   }
   if (ballY < 10) {
-    // ballSpeedY = -ballSpeedY;
+    ballSpeedY = -ballSpeedY;
   }
 }
 
