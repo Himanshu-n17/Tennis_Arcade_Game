@@ -13,7 +13,6 @@ const paddle_width = 10; //Paddle width
 //Scoring
 var Player1Score = 0;
 var Player2Score = 0;
-const WINNING_SCORE = 11;
 
 window.onload = function () {
   canvas = document.getElementById("gameCanvas");
@@ -99,10 +98,10 @@ function moveEverything() {
 
 function drawEverything() {
   //The screen
-  colorRect(0, 0, canvas.width, canvas.height, "black");
+  colorRect(10, 0, canvas.width, canvas.height, "black");
 
   // Left Side Paddle
-  colorRect(10, paddle1Y, paddle_width, paddle_height, "white", "paddle");
+  colorRect(10, paddle1Y, paddle_width, paddle_height, "white");
 
   // Right Side Paddle
   colorRect(
@@ -110,27 +109,26 @@ function drawEverything() {
     paddle2Y,
     paddle_width,
     paddle_height,
-    "white",
-    "paddle"
+    "white"
   );
 
   //The Ball
   // colorRect(ballX, 100, 10, 10, "white");
-  colorCircle(ballX, ballY, 10, "white", "ball");
+  colorCircle(ballX, ballY, 10, "white");
 
   //Scores
   canvasContext.fillText(Player1Score, 100, 100);
   canvasContext.fillText(Player2Score, canvas.width - 100, 100);
 }
 
-function colorCircle(CenterX, CenterY, radius, drawColor, className = "") {
+function colorCircle(CenterX, CenterY, radius, drawColor) {
   canvasContext.fillStyle = drawColor;
   canvasContext.beginPath();
   canvasContext.arc(CenterX, CenterY, radius, 0, Math.PI * 2, true);
   canvasContext.fill();
 }
 
-function colorRect(leftX, topY, width, height, drawColor, className = "") {
+function colorRect(leftX, topY, width, height, drawColor) {
   canvasContext.fillStyle = drawColor;
   canvasContext.fillRect(leftX, topY, width, height);
 }
