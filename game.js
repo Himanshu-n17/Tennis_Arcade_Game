@@ -13,6 +13,7 @@ const paddle_width = 10; //Paddle width
 //Scoring
 var Player1Score = 0;
 var Player2Score = 0;
+const WINNING_SCORE = 10;
 
 window.onload = function () {
   canvas = document.getElementById("gameCanvas");
@@ -27,8 +28,13 @@ window.onload = function () {
   });
 };
 
-//function to run when ball doenot hit the paddle
+//function to run when ball does not hit the paddle
 function ballReset() {
+  if (Player1Score >= WINNING_SCORE || Player2Score >= WINNING_SCORE) {
+    Player1Score = 0;
+    Player2Score = 0;
+  }
+
   ballSpeedX = -ballSpeedX; //to change the direction if not hit
   ballX = canvas.width / 2; //to start the ball from center of screen
   ballY = canvas.height / 2;
@@ -39,14 +45,10 @@ function calculateMousePos(evt) {
   var root = document.documentElement;
   var MouseX = evt.clientX - rect.left - root.scrollLeft;
   var MouseY = evt.clientY - rect.top - root.scrollTop;
-
-  return {
-    x: MouseX,
-    y: MouseY,
-  };
+  return { x: MouseX, y: MouseY };
 }
 
-//Function to move the paddel according to the ball (i.e AI)
+//Function to move the paddle according to the ball (i.e AI)
 function ComputerMovement() {
   var paddle2YCenter = paddle2Y + paddle_height / 2;
   //if paddle position is small than ball posn it will (i.e ball is down than paddle) it will move the paddle down
@@ -58,13 +60,14 @@ function ComputerMovement() {
     paddle2Y -= 6;
   }
 }
+
 function moveEverything() {
   ComputerMovement();
   ballX += ballSpeedX;
   ballY += ballSpeedY;
 
   if (ballX > canvas.width - paddle_width - 10) {
-    // if ball hits paddle area it will bounce else reset the ball.
+    //if ball hits paddle area it will bounce else reset the ball.
     if (ballY > paddle2Y && ballY < paddle2Y + paddle_height) {
       let hitPosition =
         (ballY - (paddle2Y + paddle_height / 2)) / (paddle_height / 2);
@@ -78,7 +81,7 @@ function moveEverything() {
     }
   }
   if (ballX < paddle_width + 10) {
-    // if ball hits paddle area it will bounce else reset the ball.
+    //if ball hits paddle area it will bounce else reset the ball.
     if (ballY > paddle1Y && ballY < paddle1Y + paddle_height) {
       let hitPosition =
         (ballY - (paddle1Y + paddle_height / 2)) / (paddle_height / 2);
@@ -98,22 +101,22 @@ function moveEverything() {
 
 function drawEverything() {
   //The screen
-  colorRect(10, 0, canvas.width, canvas.height, "black");
+  colorRect(0, 0, canvas.width, canvas.height, "black");
 
   // Left Side Paddle
-  colorRect(10, paddle1Y, paddle_width, paddle_height, "white");
+  colorRect(10, paddle1Y, paddle_width, paddle_height, "white", "paddle");
 
   // Right Side Paddle
   colorRect(
-    canvas.width - paddle_width,
+    canvas.width - paddle_width - 10,
     paddle2Y,
     paddle_width,
     paddle_height,
-    "white"
+    "white",
+    "paddle"
   );
 
   //The Ball
-  // colorRect(ballX, 100, 10, 10, "white");
   colorCircle(ballX, ballY, 10, "white");
 
   //Scores
@@ -128,7 +131,7 @@ function colorCircle(CenterX, CenterY, radius, drawColor) {
   canvasContext.fill();
 }
 
-function colorRect(leftX, topY, width, height, drawColor) {
+function colorRect(leftX, topY, width, height, drawColor, className = "") {
   canvasContext.fillStyle = drawColor;
   canvasContext.fillRect(leftX, topY, width, height);
 }

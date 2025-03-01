@@ -1,0 +1,39 @@
+body {
+  background-color: black;
+  color: white;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.canvas-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto;
+}
+
+#gameCanvas {
+  border: 2px solid white;
+  background-color: black;
+}
+
+.scoreboard {
+  font-size: 24px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.paddle {
+  background-color: white;
+  width: 10px;
+  height: 100px;
+  position: absolute;
+}
+
+/* .ball {
+  background-color: white;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  position: absolute;
+} */
