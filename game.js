@@ -13,6 +13,7 @@ const paddle_width = 10; //Paddle width
 //Scoring
 var Player1Score = 0;
 var Player2Score = 0;
+const WINNING_SCORE = 11;
 
 window.onload = function () {
   canvas = document.getElementById("gameCanvas");
@@ -58,46 +59,50 @@ function ComputerMovement() {
     paddle2Y -= 6;
   }
 }
-
 function moveEverything() {
   ComputerMovement();
-
   ballX += ballSpeedX;
   ballY += ballSpeedY;
 
-  if (ballX > canvas.width - 10) {
-    //if ball hits paddle area it will bounce else reset the ball.
+  if (ballX > canvas.width - paddle_width - 10) {
+    // if ball hits paddle area it will bounce else reset the ball.
     if (ballY > paddle2Y && ballY < paddle2Y + paddle_height) {
-      ballSpeedX = -ballSpeedX;
+      let hitPosition =
+        (ballY - (paddle2Y + paddle_height / 2)) / (paddle_height / 2);
+      let angle = (hitPosition * Math.PI) / 3;
+      let speed = Math.sqrt(ballSpeedX * ballSpeedX + ballSpeedY * ballSpeedY);
+      ballSpeedX = -speed * Math.cos(angle);
+      ballSpeedY = speed * Math.sin(angle);
     } else {
       Player1Score++;
       ballReset();
     }
   }
-  if (ballY > canvas.height - 10) {
-    ballSpeedY = -ballSpeedY;
-  }
-
-  if (ballX < 10) {
-    //if ball hits paddle area it will bounce else reset the ball.
+  if (ballX < paddle_width + 10) {
+    // if ball hits paddle area it will bounce else reset the ball.
     if (ballY > paddle1Y && ballY < paddle1Y + paddle_height) {
-      ballSpeedX = -ballSpeedX;
+      let hitPosition =
+        (ballY - (paddle1Y + paddle_height / 2)) / (paddle_height / 2);
+      let angle = (hitPosition * Math.PI) / 3;
+      let speed = Math.sqrt(ballSpeedX * ballSpeedX + ballSpeedY * ballSpeedY);
+      ballSpeedX = speed * Math.cos(angle);
+      ballSpeedY = speed * Math.sin(angle);
     } else {
       Player2Score++;
       ballReset();
     }
   }
-  if (ballY < 10) {
+  if (ballY > canvas.height - 10 || ballY < 10) {
     ballSpeedY = -ballSpeedY;
   }
 }
 
 function drawEverything() {
   //The screen
-  colorRect(10, 0, canvas.width, canvas.height, "black");
+  colorRect(0, 0, canvas.width, canvas.height, "black");
 
   // Left Side Paddle
-  colorRect(10, paddle1Y, paddle_width, paddle_height, "white");
+  colorRect(10, paddle1Y, paddle_width, paddle_height, "white", "paddle");
 
   // Right Side Paddle
   colorRect(
@@ -105,26 +110,27 @@ function drawEverything() {
     paddle2Y,
     paddle_width,
     paddle_height,
-    "white"
+    "white",
+    "paddle"
   );
 
   //The Ball
   // colorRect(ballX, 100, 10, 10, "white");
-  colorCircle(ballX, ballY, 10, "white");
+  colorCircle(ballX, ballY, 10, "white", "ball");
 
   //Scores
   canvasContext.fillText(Player1Score, 100, 100);
   canvasContext.fillText(Player2Score, canvas.width - 100, 100);
 }
 
-function colorCircle(CenterX, CenterY, radius, drawColor) {
+function colorCircle(CenterX, CenterY, radius, drawColor, className = "") {
   canvasContext.fillStyle = drawColor;
   canvasContext.beginPath();
   canvasContext.arc(CenterX, CenterY, radius, 0, Math.PI * 2, true);
   canvasContext.fill();
 }
 
-function colorRect(leftX, topY, width, height, drawColor) {
+function colorRect(leftX, topY, width, height, drawColor, className = "") {
   canvasContext.fillStyle = drawColor;
   canvasContext.fillRect(leftX, topY, width, height);
 }
