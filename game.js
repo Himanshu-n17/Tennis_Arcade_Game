@@ -8,38 +8,65 @@ var ballSpeedY = 4; //Speed of ball
 var paddle1Y = 250; //Paddle SIZE
 var paddle2Y = 250; //Paddle SIZE
 const paddle_height = 100; //Paddle height
-const paddle_width = 10; //Paddle width
+const paddle_width = 5; //Paddle width
 
 //Scoring
 var Player1Score = 0;
 var Player2Score = 0;
 const WINNING_SCORE = 10;
+var showingWinScreen = false;
+var gameStarted = false; // Flag to check if game has started
 
 window.onload = function () {
   canvas = document.getElementById("gameCanvas");
   canvasContext = canvas.getContext("2d");
 
-  var framesPerSecond = 30;
-  setInterval(callBoth, 1000 / framesPerSecond); //To constantly changing the position
+  // Create and add start button to the DOM
+  var startButton = document.createElement("button");
+  startButton.innerText = "Start Game";
+  startButton.id = "startButton";
+  document.body.appendChild(startButton);
 
+  // Start the game on button click
+  startButton.addEventListener("click", function () {
+    gameStarted = true;
+    startButton.style.display = "none"; // Hide the button
+    initializeGame();
+  });
+};
+
+function initializeGame() {
+  var framesPerSecond = 30;
+  //To constantly changing the position
+  setInterval(callBoth, 1000 / framesPerSecond);
+
+  //To Calculate the mouse Position
   canvas.addEventListener("mousemove", function (evt) {
     var MousePos = calculateMousePos(evt);
     paddle1Y = MousePos.y - paddle_height / 2;
   });
-};
+
+  // to stop the game when any player wins the game
+  canvas.addEventListener("click", function () {
+    if (showingWinScreen) {
+      showingWinScreen = false;
+      Player1Score = 0;
+      Player2Score = 0;
+    }
+  });
+}
 
 //function to run when ball does not hit the paddle
 function ballReset() {
   if (Player1Score >= WINNING_SCORE || Player2Score >= WINNING_SCORE) {
-    Player1Score = 0;
-    Player2Score = 0;
+    showingWinScreen = true;
   }
-
   ballSpeedX = -ballSpeedX; //to change the direction if not hit
   ballX = canvas.width / 2; //to start the ball from center of screen
   ballY = canvas.height / 2;
 }
 
+// Function to track mouse movement for paddle control
 function calculateMousePos(evt) {
   var rect = canvas.getBoundingClientRect();
   var root = document.documentElement;
@@ -53,15 +80,20 @@ function ComputerMovement() {
   var paddle2YCenter = paddle2Y + paddle_height / 2;
   //if paddle position is small than ball posn it will (i.e ball is down than paddle) it will move the paddle down
   if (paddle2YCenter < ballY - 35) {
-    paddle2Y += 6;
+    paddle2Y += 10;
   }
   //if paddle position is larger than ball posn it will (i.e ball is upper than paddle) it will move the paddle upward
   else if (paddle2YCenter > ballY + 35) {
-    paddle2Y -= 6;
+    paddle2Y -= 10;
   }
 }
 
 function moveEverything() {
+  //If final score reached game stops
+  if (showingWinScreen) {
+    return;
+  }
+
   ComputerMovement();
   ballX += ballSpeedX;
   ballY += ballSpeedY;
@@ -103,8 +135,19 @@ function drawEverything() {
   //The screen
   colorRect(0, 0, canvas.width, canvas.height, "black");
 
+  //Finish Game
+  if (showingWinScreen) {
+    canvasContext.fillStyle = "white";
+    canvasContext.fillText(
+      "Click to Continue",
+      canvas.width / 2 - 50,
+      canvas.height / 2
+    );
+    return;
+  }
+
   // Left Side Paddle
-  colorRect(10, paddle1Y, paddle_width, paddle_height, "white", "paddle");
+  colorRect(10, paddle1Y, paddle_width, paddle_height - 30, "white", "paddle");
 
   // Right Side Paddle
   colorRect(
@@ -116,15 +159,15 @@ function drawEverything() {
     "paddle"
   );
 
-  //The Ball
-  colorCircle(ballX, ballY, 10, "white");
+  // Ball
+  colorCircle(ballX, ballY, 5, "white", "ball");
 
-  //Scores
+  // Scores
   canvasContext.fillText(Player1Score, 100, 100);
   canvasContext.fillText(Player2Score, canvas.width - 100, 100);
 }
 
-function colorCircle(CenterX, CenterY, radius, drawColor) {
+function colorCircle(CenterX, CenterY, radius, drawColor, className = "") {
   canvasContext.fillStyle = drawColor;
   canvasContext.beginPath();
   canvasContext.arc(CenterX, CenterY, radius, 0, Math.PI * 2, true);
