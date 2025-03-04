@@ -54,6 +54,8 @@ function initializeGame() {
       Player1Score = 0;
       Player2Score = 0;
       paddle_height = initial_paddle_height; // Reset paddle size
+      ballSpeedX = 10; //Reset Speed of ball
+      ballSpeedY = 4;
     }
   });
 }
@@ -62,6 +64,7 @@ function initializeGame() {
 function ballReset() {
   if (Player1Score >= WINNING_SCORE || Player2Score >= WINNING_SCORE) {
     showingWinScreen = true;
+    return;
   }
   ballSpeedX = -ballSpeedX; //to change the direction if not hit
   ballX = canvas.width / 2; //to start the ball from center of screen
@@ -109,8 +112,8 @@ function moveEverything() {
       let speed = Math.sqrt(ballSpeedX * ballSpeedX + ballSpeedY * ballSpeedY);
       ballSpeedX = -speed * Math.cos(angle);
       ballSpeedY = speed * Math.sin(angle);
-      ballSpeedX *= 1.05; // Increase speed slightly after each paddle hit
-      ballSpeedY *= 1.05;
+      ballSpeedX *= 1.02; // Increase speed slightly after each paddle hit
+      ballSpeedY *= 1.02;
     } else {
       Player1Score++;
       ballReset();
