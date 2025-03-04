@@ -7,7 +7,8 @@ var ballSpeedY = 4; //Speed of ball
 
 var paddle1Y = 250; //Paddle SIZE
 var paddle2Y = 250; //Paddle SIZE
-const paddle_height = 100; //Paddle height
+const initial_paddle_height = 100; // Initial Paddle height
+var paddle_height = initial_paddle_height; // Paddle height that decreases over time
 const paddle_width = 5; //Paddle width
 
 //Scoring
@@ -21,7 +22,7 @@ window.onload = function () {
   canvas = document.getElementById("gameCanvas");
   canvasContext = canvas.getContext("2d");
 
-  // Create and add start button to the DOM
+  //Start Button
   var startButton = document.createElement("button");
   startButton.innerText = "Start Game";
   startButton.id = "startButton";
@@ -52,6 +53,7 @@ function initializeGame() {
       showingWinScreen = false;
       Player1Score = 0;
       Player2Score = 0;
+      paddle_height = initial_paddle_height; // Reset paddle size
     }
   });
 }
@@ -107,6 +109,8 @@ function moveEverything() {
       let speed = Math.sqrt(ballSpeedX * ballSpeedX + ballSpeedY * ballSpeedY);
       ballSpeedX = -speed * Math.cos(angle);
       ballSpeedY = speed * Math.sin(angle);
+      ballSpeedX *= 1.05; // Increase speed slightly after each paddle hit
+      ballSpeedY *= 1.05;
     } else {
       Player1Score++;
       ballReset();
@@ -121,6 +125,9 @@ function moveEverything() {
       let speed = Math.sqrt(ballSpeedX * ballSpeedX + ballSpeedY * ballSpeedY);
       ballSpeedX = speed * Math.cos(angle);
       ballSpeedY = speed * Math.sin(angle);
+      ballSpeedX *= 1.05; // Increase speed slightly after each paddle hit
+      ballSpeedY *= 1.05;
+      paddle_height = Math.max(50, paddle_height - 2); // Decrease paddle height over time but not below 50
     } else {
       Player2Score++;
       ballReset();
@@ -147,7 +154,7 @@ function drawEverything() {
   }
 
   // Left Side Paddle
-  colorRect(10, paddle1Y, paddle_width, paddle_height - 30, "white", "paddle");
+  colorRect(10, paddle1Y, paddle_width, paddle_height, "white", "paddle");
 
   // Right Side Paddle
   colorRect(
@@ -180,6 +187,7 @@ function colorRect(leftX, topY, width, height, drawColor, className = "") {
 }
 
 function callBoth() {
+  if (!gameStarted) return; // Don't run if game hasn't started
   moveEverything();
   drawEverything();
 }
