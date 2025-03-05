@@ -113,8 +113,8 @@ function moveEverything() {
       let speed = Math.sqrt(ballSpeedX * ballSpeedX + ballSpeedY * ballSpeedY);
       ballSpeedX = -speed * Math.cos(angle);
       ballSpeedY = speed * Math.sin(angle);
-      ballSpeedX *= 1.02; // Increase speed slightly after each paddle hit
-      ballSpeedY *= 1.02;
+      ballSpeedX *= 1.04; // Increase speed slightly after each paddle hit
+      ballSpeedY *= 1.04;
     } else {
       Player1Score++;
       ballReset();
