@@ -67,7 +67,7 @@ function ballReset() {
   if (Player1Score >= WINNING_SCORE || Player2Score >= WINNING_SCORE) {
     showingWinScreen = true;
     winnerText =
-      Player1Score >= WINNING_SCORE ? "Player 1 Wins!" : "Player 2 Wins!";
+      Player1Score >= WINNING_SCORE ? "Player 1 Wins!" : "YOU LOSE!!!";
     return;
   }
   ballSpeedX = -ballSpeedX; //to change the direction if not hit
@@ -87,7 +87,7 @@ function calculateMousePos(evt) {
 //Function to move the paddle according to the ball (i.e AI)
 function ComputerMovement() {
   var paddle2YCenter = paddle2Y + paddle_height / 2;
-  var speed = 6 + Math.random() * 2;
+  var speed = 10 + Math.random() * 2;
   //if paddle position is small than ball posn it will (i.e ball is down than paddle) it will move the paddle down
   if (paddle2YCenter < ballY - 35) {
     paddle2Y += speed;
