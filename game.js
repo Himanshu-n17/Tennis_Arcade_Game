@@ -16,6 +16,7 @@ var Player1Score = 0;
 var Player2Score = 0;
 const WINNING_SCORE = 10;
 var showingWinScreen = false;
+var winnerText = ""; //Name of winner
 var gameStarted = false; // Flag to check if game has started
 
 window.onload = function () {
@@ -53,6 +54,7 @@ function initializeGame() {
       showingWinScreen = false;
       Player1Score = 0;
       Player2Score = 0;
+      winnerText = "";
       paddle_height = initial_paddle_height; // Reset paddle size
       ballSpeedX = 10; //Reset Speed of ball
       ballSpeedY = 4;
@@ -64,6 +66,8 @@ function initializeGame() {
 function ballReset() {
   if (Player1Score >= WINNING_SCORE || Player2Score >= WINNING_SCORE) {
     showingWinScreen = true;
+    winnerText =
+      Player1Score >= WINNING_SCORE ? "Player 1 Wins!" : "Player 2 Wins!";
     return;
   }
   ballSpeedX = -ballSpeedX; //to change the direction if not hit
@@ -149,10 +153,17 @@ function drawEverything() {
   //Finish Game
   if (showingWinScreen) {
     canvasContext.fillStyle = "white";
+    canvasContext.font = "30px Arial";
+    canvasContext.fillText(
+      winnerText,
+      canvas.width / 2 - 80,
+      canvas.height / 2 - 20
+    );
+    canvasContext.font = "20px Arial";
     canvasContext.fillText(
       "Click to Continue",
-      canvas.width / 2 - 50,
-      canvas.height / 2
+      canvas.width / 2 - 70,
+      canvas.height / 2 + 20
     );
     return;
   }
@@ -174,8 +185,10 @@ function drawEverything() {
   colorCircle(ballX, ballY, 5, "white", "ball");
 
   // Scores
-  canvasContext.fillText(Player1Score, 100, 100);
-  canvasContext.fillText(Player2Score, canvas.width - 100, 100);
+  canvasContext.fillStyle = "white";
+  canvasContext.font = "30px Arial";
+  canvasContext.fillText(Player1Score, canvas.width / 4, 50);
+  canvasContext.fillText(Player2Score, (canvas.width * 3) / 4, 50);
 }
 
 function colorCircle(CenterX, CenterY, radius, drawColor, className = "") {
