@@ -83,13 +83,14 @@ function calculateMousePos(evt) {
 //Function to move the paddle according to the ball (i.e AI)
 function ComputerMovement() {
   var paddle2YCenter = paddle2Y + paddle_height / 2;
+  var speed = 6 + Math.random() * 2;
   //if paddle position is small than ball posn it will (i.e ball is down than paddle) it will move the paddle down
   if (paddle2YCenter < ballY - 35) {
-    paddle2Y += 10;
+    paddle2Y += speed;
   }
   //if paddle position is larger than ball posn it will (i.e ball is upper than paddle) it will move the paddle upward
   else if (paddle2YCenter > ballY + 35) {
-    paddle2Y -= 10;
+    paddle2Y -= speed;
   }
 }
 
