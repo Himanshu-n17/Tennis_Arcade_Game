@@ -32,7 +32,7 @@ window.onload = function () {
   var startButton = document.createElement("button");
   startButton.innerText = "Start Game";
   startButton.id = "startButton";
-  document.body.appendChild();
+  document.body.appendChild(startButton);
 
   // Start the game on button click
   startButton.addEventListener("click", function () {
