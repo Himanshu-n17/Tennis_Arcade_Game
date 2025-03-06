@@ -146,6 +146,11 @@ function moveEverything() {
   }
 }
 
+function drawNet() {
+  for (var i = 0; i < canvas.height; i += 40) {
+    colorRect(canvas.width / 2 - 1, i, 2, 20, "white");
+  }
+}
 function drawEverything() {
   //The screen
   colorRect(0, 0, canvas.width, canvas.height, "black");
@@ -167,6 +172,7 @@ function drawEverything() {
     );
     return;
   }
+  drawNet();
 
   // Left Side Paddle
   colorRect(10, paddle1Y, paddle_width, paddle_height, "white", "paddle");
