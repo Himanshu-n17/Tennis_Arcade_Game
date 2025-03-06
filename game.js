@@ -32,7 +32,7 @@ window.onload = function () {
   var startButton = document.createElement("button");
   startButton.innerText = "Start Game";
   startButton.id = "startButton";
-  document.body.appendChild(startButton);
+  document.body.appendChild();
 
   // Start the game on button click
   startButton.addEventListener("click", function () {
@@ -75,6 +75,7 @@ function ballReset() {
       Player1Score >= WINNING_SCORE ? "Player 1 Wins!" : "YOU LOSE!!!";
     return;
   }
+  scoreSound.play();
   ballSpeedX = -ballSpeedX; //to change the direction if not hit
   ballX = canvas.width / 2; //to start the ball from center of screen
   ballY = canvas.height / 2;
@@ -116,6 +117,7 @@ function moveEverything() {
   if (ballX > canvas.width - paddle_width - 10) {
     //if ball hits paddle area it will bounce else reset the ball.
     if (ballY > paddle2Y && ballY < paddle2Y + paddle_height) {
+      hitPaddleSound.play();
       let hitPosition =
         (ballY - (paddle2Y + paddle_height / 2)) / (paddle_height / 2);
       let angle = (hitPosition * Math.PI) / 3;
@@ -132,6 +134,7 @@ function moveEverything() {
   if (ballX < paddle_width + 10) {
     //if ball hits paddle area it will bounce else reset the ball.
     if (ballY > paddle1Y && ballY < paddle1Y + paddle_height) {
+      hitPaddleSound.play();
       let hitPosition =
         (ballY - (paddle1Y + paddle_height / 2)) / (paddle_height / 2);
       let angle = (hitPosition * Math.PI) / 3;
@@ -147,6 +150,7 @@ function moveEverything() {
     }
   }
   if (ballY > canvas.height - 10 || ballY < 10) {
+    wallBounceSound.play();
     ballSpeedY = -ballSpeedY;
   }
 }
@@ -156,6 +160,7 @@ function drawNet() {
     colorRect(canvas.width / 2 - 1, i, 2, 20, "white");
   }
 }
+
 function drawEverything() {
   //The screen
   colorRect(0, 0, canvas.width, canvas.height, "black");
@@ -169,11 +174,11 @@ function drawEverything() {
       canvas.width / 2 - 80,
       canvas.height / 2 - 20
     );
-    canvasContext.font = "20px Arial";
+    canvasContext.font = "15px Arial";
     canvasContext.fillText(
-      "Click to Continue",
+      "Click on Screen to Continue",
       canvas.width / 2 - 70,
-      canvas.height / 2 + 20
+      canvas.height / 2 + 70
     );
     return;
   }
